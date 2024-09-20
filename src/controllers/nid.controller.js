@@ -7,6 +7,7 @@ const pick = require("../utils/pick.js");
 const calculatePagination = require("../utils/calculatePagination.js");
 const Nid = require("../models/nid.model.js");
 const handelFile = require("../utils/handelFile.js");
+const User = require("../models/user.model.js");
 
 const createNid = catchAsync(async (req, res) => {
   const file = req.file;
@@ -42,11 +43,9 @@ const createNid = catchAsync(async (req, res) => {
     }
   );
 
-  await User.findByIdAndUpdate(
-    req.user._id,
-    {},
-    { $inc: { generatedPdfCount: 1 } }
-  );
+  await User.findByIdAndUpdate(req.user._id, {
+    $inc: { generatedPdfCount: 1 },
+  });
 
   sendResponse(res, {
     statusCode: 201,

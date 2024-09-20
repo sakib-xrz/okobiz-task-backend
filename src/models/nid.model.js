@@ -62,7 +62,6 @@ const nidSchema = new mongoose.Schema(
     photo: {
       type: String,
       default: "",
-      required: true,
     },
     key: {
       type: String,
