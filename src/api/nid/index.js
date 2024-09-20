@@ -8,7 +8,12 @@ const { upload } = require("../../utils/handelFile.js");
 
 router
   .route("/")
-  .post(authGuard(), upload.single("file"), NidController.createNid)
+  .post(authGuard(), upload.single("file"), NidController.createNid);
+
+router
+  .route("/user/userId")
   .get(authGuard("ADMIN"), NidController.getNidsByUserId);
+
+router.route("/:key").get(authGuard(), NidController.getNidByKey);
 
 module.exports = router;

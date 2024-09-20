@@ -64,6 +64,11 @@ const nidSchema = new mongoose.Schema(
       default: "",
       required: true,
     },
+    key: {
+      type: String,
+      required: true,
+      unique: true,
+    },
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",

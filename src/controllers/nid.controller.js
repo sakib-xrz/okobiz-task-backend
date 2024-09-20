@@ -57,7 +57,7 @@ const createNid = catchAsync(async (req, res) => {
 });
 
 const getNidsByUserId = catchAsync(async (req, res) => {
-  const user = req.user;
+  const userId = req.params.userId;
 
   const searchableFields = ["b_name", "e_name", "nid_no"];
   const filters = pick(req.query, ["search"]);
@@ -90,7 +90,7 @@ const getNidsByUserId = catchAsync(async (req, res) => {
     sortConditions[sortBy] = sortOrder;
   }
 
-  andConditions.push({ user: user._id });
+  andConditions.push({ user: userId });
 
   const whereConditions =
     andConditions.length > 0 ? { $and: andConditions } : {};
@@ -115,9 +115,27 @@ const getNidsByUserId = catchAsync(async (req, res) => {
   });
 });
 
+const getNidByKey = catchAsync(async (req, res) => {
+  const key = req.params.key;
+
+  const nid = await Nid.findOne({ key });
+
+  if (!nid) {
+    throw new ApiError(404, "Nid not found");
+  }
+
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: "Nid fetched successfully",
+    data: nid,
+  });
+});
+
 const NidController = {
   createNid,
   getNidsByUserId,
+  getNidByKey,
 };
 
 module.exports = NidController;
